@@ -24,7 +24,7 @@ connectDB()
 //Router middleware
 app.use('/api/registration', user)
 app.use('/api/login', auth)
-app.use('/api/post', post)
+app.use('/api/articles', post)
 app.use('/doc', swagger.serve)
 app.use('/doc', swagger.setup(swaggerDoc))
 

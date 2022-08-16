@@ -126,9 +126,9 @@ const post = {
 }
 
 const getAll = {
-    "/api/post/all": all,
-    "/api/post/user/": getUserById,
-    "/api/post/": {
+    "/api/articles/all": all,
+    "/api/articles/user/": getUserById,
+    "/api/articles/": {
         post: post
     },
 }
