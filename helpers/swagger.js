@@ -12,7 +12,7 @@ const swaggerDoc = {
     },
     servers: [
         {
-            url: "http://localhost:8080",
+            url: "https://article-poster-api.herokuapp.com/",
             description: "API root"
         }
     ],
