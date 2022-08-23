@@ -7,8 +7,7 @@ const Article = require('../models/article')
 const  auth = require('../middleware/check')
 
 // Redis management
-const REDIS_PORT = process.env.REDIS_PORT || 6379
-const client = redis.createClient(REDIS_PORT)
+const client = redis.createClient(6379)
 client.connect()
 
 //Post an article
