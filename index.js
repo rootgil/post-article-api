@@ -39,5 +39,3 @@ app.use('/doc', swagger.serve)
 app.use('/doc', swagger.setup(swaggerDoc))
 
 app.listen(process.env.PORT || 8080)
-
-
