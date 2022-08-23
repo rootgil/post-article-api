@@ -5,7 +5,7 @@ const swagger = require('swagger-ui-express')
 
 const user = require('./routes/user')
 const auth = require('./routes/auth')
-const post = require('./routes/post')
+const post = require('./routes/article')
 const swaggerDoc = require('./helpers/swagger')
 
 const app = express()

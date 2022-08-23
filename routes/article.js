@@ -29,23 +29,23 @@ router.post('/', auth, async (req, res) => {
 })
 
 //get all post
-router.get('/all', async (req, res) => {
+router.get('/all', auth, async (req, res) => {
     return res.json(await Article.find({}))
 })
 
 //Do comment
-router.put('/:infos/comment', auth, async (req, res) => {
+router.put('/comment/:id', auth, async (req, res) => {
     try{
-        const post = await Article.findById(req.body.id)
+        const post = await Article.findById(req.params.id)
 
         if(!post)
-            return res.status(400).send('Internal error')
+            return res.status(400).send('Bad information')
 
         await post.updateOne({ $push: {
             comments:
             {
                 id_user: req.user._id,
-                comment: req.params.infos
+                comment: req.body.infos
             }
         } });
 
@@ -67,7 +67,7 @@ router.delete('/:id', auth, async (req, res) => {
             await post.deleteOne()*
             res.json('The post has been deleted')
         }else{
-            res.json("The post has can been deleted by only the author")
+            res.json("The post can been deleted by only the author")
         }
     }catch(err){
         res.status(500).json(err)
@@ -76,7 +76,7 @@ router.delete('/:id', auth, async (req, res) => {
 })
 
 //like an article
-router.put('/:id/like', auth, async (req, res) => {
+router.put('/like/:id', auth, async (req, res) => {
     try{
         let already = false
         if(!Number.isInteger(req.body.note))
@@ -102,9 +102,9 @@ router.put('/:id/like', auth, async (req, res) => {
                     note: req.body.note
                 }
             } });
-
-
-
+        }
+        else{
+            res.status(400).json('You have already liked')
         }
 
         return res.json('Liked successfully')
@@ -127,7 +127,7 @@ router.get('/', auth, async (req, res) => {
 })
 
 //get some article
-router.get('/user/', async (req, res) => {
+router.get('/user/', auth, async (req, res) => {
     try{
         const post = await Article.find({id_auteur: req.query.id})
         if(!post)
@@ -153,7 +153,7 @@ router.get('/:id', auth, async (req, res) => {
 })
 
 //get the post note
-router.get('/:id/note', async (req, res) => {
+router.get('/note/:id', auth, async (req, res) => {
     try{
         const post = await Article.findById(req.params.id)
 

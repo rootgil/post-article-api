@@ -1,16 +1,18 @@
-const { getAll } = require('../helpers/post.swagger')
+const { getAll } = require('./article.swagger')
 const registration = require('../helpers/registration.swagger')
+const login = require('../helpers/auth.swagger')
+
 
 const swaggerDoc = {
     openapi: "3.0.0",
     info: {
         title: "Article Post",
-        version: "0.0.1",
+        version: "1.0.0",
         description: "This is an API for article posting"
     },
     servers: [
         {
-            url: "http://localhost:3000",
+            url: "http://localhost:8080",
             description: "API root"
         }
     ],
@@ -26,9 +28,22 @@ const swaggerDoc = {
     ],
     paths: {
         ...registration,
-        "/api/login": {},
+        ...login,
         ...getAll
-    }
+    },
+    components: {
+        securitySchemes: {
+            jwt: {
+                type: "http",
+                scheme: "bearer",
+                in: "header",
+                bearerFormat: "JWT"
+            },
+        }
+    },
+    security: [{
+        jwt: []
+    }]
 }
 
 module.exports = swaggerDoc
