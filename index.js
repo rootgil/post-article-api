@@ -21,6 +21,14 @@ dotenv.config({path:'./config/config.env'})
 const connectDB = require('./config/db')
 connectDB()
 
+app.get('/', (req, res) => {
+    res.status(200).json({
+        "swagger-documentation": '/doc',
+        "description": "API for article posting",
+        "principale-route": "/api/"
+    })
+})
+
 //Router middleware
 app.use('/api/registration', user)
 app.use('/api/login', auth)
