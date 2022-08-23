@@ -427,6 +427,59 @@ const note = {
     }
 }
 
+const nbre = {
+    tags: ['Post'],
+    description: "Get some post comment number",
+    parameters: [
+        {
+            name: "id",
+            in: "path",
+            description: "article id",
+            type: 'string',
+            example: "62fb2442114bbcb28b186552"
+        }
+    ],
+    responses: {
+        200: {
+            description: "OK",
+            content: {
+                'application/json': {
+                    schema: {
+                        type: "object",
+                        example: {
+                            number: 4
+                        }
+                    }
+                }
+            }
+        },
+        400: {
+            description: "Bad",
+            content: {
+                'application/json': {
+                    schema: {
+                        type: "string",
+                        description: "Bad authorisation message",
+                        example: "Bad information"
+                    }
+                }
+            }
+        },
+        500: {
+            description: "Error",
+            content: {
+                'application/json': {
+                    schema: {
+                        type: "string",
+                        description: "Server error",
+                        example: "error"
+                    }
+                }
+            }
+        }
+    }
+}
+
 const getAll = {
     "/api/articles/all": all,
     "/api/articles/user/": getUserPost,
@@ -446,6 +499,9 @@ const getAll = {
     },
     "/api/articles/note/{id}": {
         get: note
+    },
+    "/api/articles/comment/state/{id}": {
+        get: nbre
     }
 }
 

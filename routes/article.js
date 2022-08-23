@@ -1,8 +1,15 @@
 const express = require('express')
+const redis = require('redis')
+
 const router = express.Router()
 
 const Article = require('../models/article')
-const  auth = require('../middleware/verification')
+const  auth = require('../middleware/check')
+
+// Redis management
+const REDIS_PORT = process.env.REDIS_PORT || 6379
+const client = redis.createClient(REDIS_PORT)
+client.connect()
 
 //Post an article
 router.post('/', auth, async (req, res) => {
@@ -47,11 +54,55 @@ router.put('/comment/:id', auth, async (req, res) => {
                 id_user: req.user._id,
                 comment: req.body.infos
             }
-        } });
+        }});
+
+        await client.incr(req.params.id)
 
         return res.json('Comment was well added')
     }catch(err){
         res.status(500).json(err)
+    }
+})
+
+const sendResponse = (id, nbre) => {
+    return {
+        fromCache: true,
+        data: nbre
+    }
+}
+
+// cache for comment
+const commentCache = async (req, res, next) => {
+    const { id } = req.params
+
+    const commentNbre = await client.get(id)
+
+    if(commentNbre !== null) {
+        res.send(sendResponse(id, commentNbre))
+    } else {
+        next()
+    }
+}
+
+router.get('/comment/state/:id', commentCache, async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const article = await Article.findById(id)
+
+        const n = article.comments.length
+
+        await client.set(id, n, {
+            EX: 180
+        })
+
+        res.send({
+            fromCache: false,
+            data: n
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500)
     }
 })
 

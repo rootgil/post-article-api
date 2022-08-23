@@ -19,8 +19,10 @@ dotenv.config({path:'./config/config.env'})
 
 //connect DB
 const connectDB = require('./config/db')
+const { preferences } = require("joi")
 connectDB()
 
+// Principale route
 app.get('/', (req, res) => {
     res.status(200).json({
         "swagger-documentation": '/doc',
