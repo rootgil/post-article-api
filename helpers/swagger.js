@@ -11,7 +11,7 @@ const swaggerDoc = {
     },
     servers: [
         {
-            url: "https://article-poster-api.herokuapp.com",
+            url: "https://article-poster-api.herokuapp.com/",
             description: "API root"
         }
     ],
