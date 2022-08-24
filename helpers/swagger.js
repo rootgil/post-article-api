@@ -2,7 +2,6 @@ const { getAll } = require('./article.swagger')
 const registration = require('../helpers/registration.swagger')
 const login = require('../helpers/auth.swagger')
 
-
 const swaggerDoc = {
     openapi: "3.0.0",
     info: {
@@ -12,7 +11,7 @@ const swaggerDoc = {
     },
     servers: [
         {
-            url: "https://article-poster-api.herokuapp.com/",
+            url: "https://article-poster-api.herokuapp.com",
             description: "API root"
         }
     ],

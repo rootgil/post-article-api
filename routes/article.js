@@ -7,8 +7,13 @@ const Article = require('../models/article')
 const  auth = require('../middleware/check')
 
 // Redis management
-const client = redis.createClient(6379)
+const client = redis.createClient({
+    url: "redis://:SFiVVacyoMsVhcbKPDEyi1P5pA4zMiCf@redis-19906.c268.eu-west-1-2.ec2.cloud.redislabs.com:19906",
+    no_ready_check: true
+})
+
 client.connect()
+
 
 //Post an article
 router.post('/', auth, async (req, res) => {
@@ -55,7 +60,10 @@ router.put('/comment/:id', auth, async (req, res) => {
             }
         }});
 
-        await client.incr(req.params.id)
+        const n = await client.get(req.params.id)
+        console.log(n)
+        if ( n !== undefined && n !== null)
+            await client.incr(req.params.id)
 
         return res.json('Comment was well added')
     }catch(err){
